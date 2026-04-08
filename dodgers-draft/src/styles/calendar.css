@@ -1,0 +1,12 @@
+﻿.no-game {
+    background-color: #ddd !important;
+}
+
+.available {
+    background-color: white !important;
+}
+
+.selected {
+    background-color: #4caf50 !important;
+    color:white !important;
+}
