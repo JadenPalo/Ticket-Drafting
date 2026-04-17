@@ -3,29 +3,36 @@ import "react-calendar/dist/Calendar.css";
 import "../styles/calendar.css";
 
 function CalendarView({
-  games,
-  pickedGames,
-  currentPlayerId,
+  games = [],
+  pickedGames = {},
   currentUserId,
-  setSelectedGameDetails
+  currentTurnUserId,
+  setSelectedGameDetails,
 }) {
   const getGameFromDate = (date) => {
-    // Convert JS Date to YYYY-MM-DD in local time
+    if (!games || games.length === 0) return null;
+
+    // ✅ LOCAL DATE FIX (important)
     const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, "0"); // months 0-11
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
 
     const dateStr = `${yyyy}-${mm}-${dd}`;
+
     return games.find((game) => game.date === dateStr);
   };
 
   return (
     <Calendar
+      // ✅ ALWAYS allow click (UI only)
       onClickDay={(value) => {
         const game = getGameFromDate(value);
-        if (game) setSelectedGameDetails(game);
+        if (!game) return;
+
+        setSelectedGameDetails(game);
       }}
 
+      // ✅ YOUR ORIGINAL UI BACK
       tileContent={({ date }) => {
         const game = getGameFromDate(date);
         if (!game) return null;
@@ -46,6 +53,7 @@ function CalendarView({
         );
       }}
 
+      // ✅ COLOR LOGIC RESTORED
       tileClassName={({ date }) => {
         const game = getGameFromDate(date);
         if (!game) return "no-game";
